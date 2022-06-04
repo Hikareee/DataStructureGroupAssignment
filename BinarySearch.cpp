@@ -1,46 +1,88 @@
+// C++ program to implement recursive Binary Search
+#include <fstream>
 #include <iostream>
-
-
+#include <string>
+#include <sstream>
+#include <vector>
+#include <stdio.h>
+#include <chrono>
+#include <bits.h>
 using namespace std;
 
-int binarySearch(int arr[], int l, int r, int x)
+int numsinFile();
+// A recursive binary search function. It returns
+// location of x in given array arr[l..r] is present,
+// otherwise -1
+int binarySearch(int arr[], int n, int x)
 {
-    if (r >= l)
+    // search space is nums[low…high]
+    int low = 0, high = n - 1;
+
+    // loop till the search space is exhausted
+    while (low <= high)
     {
-        int mid = l + (r - l) / 2;
+        // find the mid-value in the search space and
+        // compares it with the target
 
-        // If the element is present at the middle
-        // itself
-        if (arr[mid] == x)
+        int mid = (low + high) / 2;    // overflow can happen
+        // int mid = low + (high - low)/2;
+        // int mid = high - (high - low)/2;
+
+        // target value is found
+        if (x == arr[mid]) {
             return mid;
+        }
 
-        // If element is smaller than mid, then
-        // it can only be present in left subarr
-        if (arr[mid] > x)
-            return binarySearch(arr, l, mid - 1, x);
+        // if the target is less than the middle element, discard all elements
+        // in the right search space, including the middle element
+        else if (x < arr[mid]) {
+            high = mid - 1;
+        }
 
-        // Else the element can only be present
-        // in right subarr
-        return binarySearch(arr, mid + 1, r, x);
+        // if the target is more than the middle element, discard all elements
+        // in the left search space, including the middle element
+        else {
+            low = mid + 1;
+        }
     }
 
-    // We reach here when element is not
-    // present in arr
+    // target doesn't exist in the array
     return -1;
 }
+void Show(int Entries, int Arr[]) {
+    for (int i = 0; i < Entries; i++) {
+        cout << Arr[i] << '\t';
+        if (!(i % 10)) {
+            cout << endl;
+        }
+    }
+}
+void readFromFile(char FileName[], int storage[], int& noOfEn) {
+    ifstream take(FileName);
+    take >> noOfEn;
+    for (int i = 0; i < noOfEn; i++) {
+        take >> storage[i];
 
+    }
+}
 
-using namespace std;
-
-int main() {
-    int arr[10] = { 7, 8, 10, 4, 1, 1, 10, 4, 8, 2 };
-    int x = 2;
-    int n = sizeof(arr) / sizeof(arr[0]);
-    int result = binarySearch(arr, 0, n - 1, x);
+int main(void)
+{
+    int count, stor[500];
+    char filename[12] = { "500test.txt" };
+    readFromFile(filename, stor, count);
+    int x = 248;
+    auto started = std::chrono::high_resolution_clock::now();
+    int result = binarySearch(stor, count, x);
     (result == -1)
         ? cout << "Element is not present in array"
         : cout << "Element is present at index " << result;
+    Show(count, stor);
+    // Calculating total time taken by the program.
+    auto done = std::chrono::high_resolution_clock::now();
+
+    cout << "\n" << "The runtime for this code is " << std::chrono::duration_cast<std::chrono::milliseconds>(done - started).count() << " milliseconds";
     return 0;
 
-}
 
+}
