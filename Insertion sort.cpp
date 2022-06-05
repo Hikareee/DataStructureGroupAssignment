@@ -20,7 +20,7 @@ int* readDataFile()
 	fstream ifile;
 	string datafile;
 
-	ifile.open("1000.txt");
+	ifile.open("100.txt");
 
 	if (ifile.fail())
 	{
@@ -49,7 +49,7 @@ int numsInFile()
 {
 	ifstream ifile;
 	char trash;
-	ifile.open("1000.txt");
+	ifile.open("100.txt");
 
 	ifile >> trash;
 	int i;
@@ -101,20 +101,18 @@ void display(int a[], int n)
 
 int main()
 {
+	cout << "Pre sort: ";
 	int* arr = readDataFile(); 
 
-    int size = numsInFile();
+	int size = numsInFile();
 
     auto started = high_resolution_clock::now();
-	cout << "Pre sort: ";
-    display(arr, size);
-	cout << "\n";
+	
     insSort(arr, size);
+	cout << "\n";
 	cout << "Post sort: ";
     display(arr, size);
-	cout << "\n";
     auto done = high_resolution_clock::now();
-
-    cout << "\n" << "The runtime for this code is " << std::chrono::duration_cast<std::chrono::milliseconds>(done - started).count() << " milliseconds";
+	cout << "\n" << "The runtime for this code is " << std::chrono::duration_cast<std::chrono::milliseconds>(done - started).count() << " milliseconds";
     return 0;
 }
