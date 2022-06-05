@@ -10,8 +10,8 @@ int numsInFile();
 int seqsearch(int arr[], int n, int x)
 {
 	int i;
-	for (i = 0; i < n; i++)
-		if (arr[i] == x)
+	for (i= 0; i < n; i++)
+		if(arr[i] == x)
 			return i;
 	return -1;
 }
@@ -23,9 +23,9 @@ int* readDataFile()
 
 	ifile.open("1000.txt");
 
-	if (ifile.fail())
+	if(ifile.fail())
 	{
-		cout << "Invalid filename" << endl;
+		cout<<"Invalid filename" << endl;
 		exit(0);
 	}
 
@@ -33,12 +33,12 @@ int* readDataFile()
 	char trash;
 	ifile >> trash;
 	int num = 0;
-	for (int i = 0; !ifile.eof(); i++)
+	for(int i = 0; !ifile.eof(); i++)
 	{
-		ifile >> num >> trash;
+		ifile>>num >> trash;
 		if (!ifile.good())
 			break;
-		(dyArr[i]) = num;
+		(dyArr[i])= num;
 	}
 
 	ifile.close();
@@ -55,9 +55,9 @@ int numsInFile()
 	ifile >> trash;
 	int i;
 	int num = 0;
-	for (i = 0; ifile.good(); i++)
+	for (i=0; ifile.good(); i++)
 	{
-		ifile >> num >> trash;
+		ifile>> num >> trash;
 		if (!ifile.good())
 			break;
 		cout << num << trash;
@@ -67,10 +67,10 @@ int numsInFile()
 
 //driver code
 int main(void)
-{
+{	
 	int* arr = readDataFile();
-
-	int x = 206;
+	
+	int x = 2;
 
 	auto start = high_resolution_clock::now();
 
@@ -79,14 +79,14 @@ int main(void)
 	auto stop = high_resolution_clock::now();
 
 	(result == -1)
-		? cout << "\nElement is not present in array"
+		? cout << "Element is not present in array"
 		: cout << "\nElement is present at index: " << result;
 
 	cout << endl;
 
 	auto duration = duration_cast<milliseconds>(stop - start);
-	cout << "Time taken by function: " << duration.count() << "milliseconds" << endl;
+	cout<<"Time taken by function: " <<duration.count()<< "milliseconds"<< endl;
 
-	delete[] arr;
+	delete [] arr;
 	return 0;
 }
