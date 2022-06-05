@@ -12,6 +12,65 @@ void swap(int a[], int x, int y) {
     a[x] = a[y];
     a[y] = temp;
 }
+int numsInFile();
+
+int seqsearch(int arr[], int n, int x)
+{
+	int i;
+	for (i = 0; i < n; i++)
+		if (arr[i] == x)
+			return i;
+	return -1;
+}
+
+int* readDataFile()
+{
+	fstream ifile;
+	string datafile;
+
+	ifile.open("1000.txt");
+
+	if (ifile.fail())
+	{
+		cout << "Invalid filename" << endl;
+		exit(0);
+	}
+
+	int* dyArr = new int[numsInFile()];
+	char trash;
+	ifile >> trash;
+	int num = 0;
+	for (int i = 0; !ifile.eof(); i++)
+	{
+		ifile >> num >> trash;
+		if (!ifile.good())
+			break;
+		(dyArr[i]) = num;
+	}
+
+	ifile.close();
+	return (dyArr);
+
+}
+
+int numsInFile()
+{
+	ifstream ifile;
+	char trash;
+	ifile.open("1000.txt");
+
+	ifile >> trash;
+	int i;
+	int num = 0;
+	for (i = 0; ifile.good(); i++)
+	{
+		ifile >> num >> trash;
+		if (!ifile.good())
+			break;
+		cout << num << trash;
+	}
+	return i;
+}
 
 void bubble(int a[], int n) {
     int i = n - 1;
@@ -42,8 +101,8 @@ void show(int a[], int n) {
 int main() {
 
     auto started = high_resolution_clock::now();
-    int arr[] = { 12, 193, 45, 193, 12, 349, 3933, 930, 19 };
-    int size = sizeof(arr) / sizeof(int);
+	int* arr = readDataFile();
+	int size = numsInFile();
 
     cout << "Pre bubble sort: ";
     show(arr, size);
