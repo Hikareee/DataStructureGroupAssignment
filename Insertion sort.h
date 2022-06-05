@@ -42,11 +42,14 @@ int main()
     int arr[] = {11, 23, 434, 122, 12, 44, 24, 66};
 
     int size = sizeof(arr)/sizeof(int);
-
+    auto started = high_resolution_clock::now();
     display(arr, size);
 
     insSort(arr, size);
 
     display(arr, size);
+    auto done = high_resolution_clock::now();
+
+    cout << "\n" << "The runtime for this code is " << std::chrono::duration_cast<std::chrono::milliseconds>(done - started).count() << " milliseconds";
     return 0;
 }
