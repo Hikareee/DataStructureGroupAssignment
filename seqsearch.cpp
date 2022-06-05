@@ -5,13 +5,13 @@
 using namespace std;
 using namespace std::chrono;
 
-int numsinFile();
+int numsInFile();
 
-int search(int arr[], int n, int x)
+int seqsearch(int arr[], int n, int x)
 {
 	int i;
-	for (i= 0; i < n; i++)
-		if(arr[i] == x)
+	for (i = 0; i < n; i++)
+		if (arr[i] == x)
 			return i;
 	return -1;
 }
@@ -20,62 +20,73 @@ int* readDataFile()
 {
 	fstream ifile;
 	string datafile;
-	//cout<<"Enter the name of the data file to read: " << endl;
-	// cin>> datafile;
-	ifile.open("10.txt");
 
-	if(ifile.fail())
+	ifile.open("1000.txt");
+
+	if (ifile.fail())
 	{
-		cout<<"Invalid filename" << endl;
+		cout << "Invalid filename" << endl;
 		exit(0);
 	}
 
 	int* dyArr = new int[numsInFile()];
+	char trash;
+	ifile >> trash;
 	int num = 0;
-	for(int i = 0; !ifile.eof(); i++)
+	for (int i = 0; !ifile.eof(); i++)
 	{
-		ifile>>num;
-		ifile.ignore();
-		(dyArr[i])= num;
+		ifile >> num >> trash;
+		if (!ifile.good())
+			break;
+		(dyArr[i]) = num;
 	}
 
 	ifile.close();
 	return (dyArr);
+
 }
 
 int numsInFile()
 {
 	ifstream ifile;
-	ifile.open("10.txt");
+	char trash;
+	ifile.open("1000.txt");
 
+	ifile >> trash;
 	int i;
 	int num = 0;
-	for (i=0; ifile.good(); i++)
+	for (i = 0; ifile.good(); i++)
 	{
-		ifile>> num;
-		ifile.ignore(1);
+		ifile >> num >> trash;
+		if (!ifile.good())
+			break;
+		cout << num << trash;
 	}
 	return i;
 }
 
-
-
+//driver code
 int main(void)
 {
 	int* arr = readDataFile();
-	int x = ;
+
+	int x = 206;
+
 	auto start = high_resolution_clock::now();
-	int result = search(arr, numsInFile(), x);
+
+	int result = seqsearch(arr, numsInFile(), x);
+
 	auto stop = high_resolution_clock::now();
+
 	(result == -1)
-		? cout << "Element is not present in array"
-		: cout << "Element is present at index" << result;
+		? cout << "\nElement is not present in array"
+		: cout << "\nElement is present at index: " << result;
+
 	cout << endl;
 
-	auto duration = duration_cast<microseconds>(stop - start);
-	cout << "Time taken by function: " << duration.count()<< "microseconds" << endl;
+	auto duration = duration_cast<milliseconds>(stop - start);
+	cout << "Time taken by function: " << duration.count() << "milliseconds" << endl;
 
-	delete [] arr;
+	delete[] arr;
 	return 0;
 }
-
