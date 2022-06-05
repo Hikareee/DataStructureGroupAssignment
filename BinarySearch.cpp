@@ -7,82 +7,106 @@
 #include <stdio.h>
 #include <chrono>
 #include <bits.h>
+
 using namespace std;
 
-int numsinFile();
 // A recursive binary search function. It returns
 // location of x in given array arr[l..r] is present,
 // otherwise -1
-int binarySearch(int arr[], int n, int x)
+int binarySearch(int arr[], int l, int r, int x)
 {
-    // search space is nums[low…high]
-    int low = 0, high = n - 1;
+	while (l <= r)
+	{
+		int m = l + (r - l) / 2;
 
-    // loop till the search space is exhausted
-    while (low <= high)
-    {
-        // find the mid-value in the search space and
-        // compares it with the target
+		// Check if x is present at mid
+		if (arr[m] == x)
+			return m;
 
-        int mid = (low + high) / 2;    // overflow can happen
-        // int mid = low + (high - low)/2;
-        // int mid = high - (high - low)/2;
+		// If x greater, ignore left half  
+		if (arr[m] < x)
+			l = m + 1;
 
-        // target value is found
-        if (x == arr[mid]) {
-            return mid;
-        }
+		// If x is smaller, ignore right half 
+		else
+			r = m - 1;
+	}
 
-        // if the target is less than the middle element, discard all elements
-        // in the right search space, including the middle element
-        else if (x < arr[mid]) {
-            high = mid - 1;
-        }
-
-        // if the target is more than the middle element, discard all elements
-        // in the left search space, including the middle element
-        else {
-            low = mid + 1;
-        }
-    }
-
-    // target doesn't exist in the array
-    return -1;
+	// if we reach here, then element was not present
+	return -1;
 }
-void Show(int Entries, int Arr[]) {
-    for (int i = 0; i < Entries; i++) {
-        cout << Arr[i] << '\t';
-        if (!(i % 10)) {
-            cout << endl;
-        }
-    }
-}
-void readFromFile(char FileName[], int storage[], int& noOfEn) {
-    ifstream take(FileName);
-    take >> noOfEn;
-    for (int i = 0; i < noOfEn; i++) {
-        take >> storage[i];
+  
+int numsInFile();
 
-    }
+int seqsearch(int arr[], int n, int x)
+{
+	int i;
+	for (i = 0; i < n; i++)
+		if (arr[i] == x)
+			return i;
+	return -1;
+}
+
+int* readDataFile()
+{
+	fstream ifile;
+	string datafile;
+
+	ifile.open("onethousand.txt");
+
+	if (ifile.fail())
+	{
+		cout << "Invalid filename" << endl;
+		exit(0);
+	}
+
+	int* dyArr = new int[numsInFile()];
+	char trash;
+	ifile >> trash;
+	int num = 0;
+	for (int i = 0; !ifile.eof(); i++)
+	{
+		ifile >> num >> trash;
+		if (!ifile.good())
+			break;
+		(dyArr[i]) = num;
+	}
+
+	ifile.close();
+	return (dyArr);
+
+}
+
+int numsInFile()
+{
+	ifstream ifile;
+	char trash;
+	ifile.open("onethousand.txt");
+
+	ifile >> trash;
+	int i;
+	int num = 0;
+	for (i = 0; ifile.good(); i++)
+	{
+		ifile >> num >> trash;
+		if (!ifile.good())
+			break;
+		cout << num << trash;
+	}
+	return i;
 }
 
 int main(void)
 {
-    int count, stor[500];
-    char filename[12] = { "500test.txt" };
-    readFromFile(filename, stor, count);
-    int x = 248;
+	cout << "The array:\n ";
+	int* arr = readDataFile();
+    int x = 929;
     auto started = std::chrono::high_resolution_clock::now();
-    int result = binarySearch(stor, count, x);
+    int result = binarySearch(arr, 0,numsInFile(), x);
+	auto done = std::chrono::high_resolution_clock::now();
     (result == -1)
-        ? cout << "Element is not present in array"
-        : cout << "Element is present at index " << result;
-    Show(count, stor);
-    // Calculating total time taken by the program.
-    auto done = std::chrono::high_resolution_clock::now();
-
+        ? cout << "\nElement is not present in array"
+        : cout << "\nElement is present at index " << result;
     cout << "\n" << "The runtime for this code is " << std::chrono::duration_cast<std::chrono::milliseconds>(done - started).count() << " milliseconds";
     return 0;
-
-
 }
